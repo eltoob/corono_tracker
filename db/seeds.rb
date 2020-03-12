@@ -54,7 +54,7 @@ ActiveRecord::Base.transaction do
                 date =  Date.strptime(k, '%m/%d/%y')
                 TimeSeries.create(
                     region: r["Province/State"], 
-                    country: r["Country/Region"] || r["Province/State"],
+                    country: r["Country/Region"],
                     date: date,
                     metric: "confirmed",
                     lat: r["Lat"],
