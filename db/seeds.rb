@@ -26,57 +26,58 @@ confirmed = read(confirmed_file)
 deaths = read(deaths_file)
 
 
-
-recovered.each do |r|
-    r.each do |k,val|
-        if  k[0].to_i.to_s == k[0]
-            date =  Date.strptime(k, '%m/%d/%y')
-            TimeSeries.create(
-                region: r["Province/State"], 
-                country: r["Country/Region"],
-                date: date,
-                metric: "recovered",
-                lat: r["Lat"],
-                long: r["Long"],
-                count: val.to_i,
-            )
-        end
-        puts r["Province/State"]
-    end
-end
-
-
-
-confirmed.each do |r|
-    r.each do |k,val|
-        if  k[0].to_i.to_s == k[0]
-            date =  Date.strptime(k, '%m/%d/%y')
-            TimeSeries.create(
-                region: r["Province/State"], 
-                country: r["Country/Region"],
-                date: date,
-                metric: "confirmed",
-                lat: r["Lat"],
-                long: r["Long"],
-                count: val.to_i,
-            )
+ActiveRecord::Base.transaction do
+    recovered.each do |r|
+        r.each do |k,val|
+            if  k[0].to_i.to_s == k[0]
+                date =  Date.strptime(k, '%m/%d/%y')
+                TimeSeries.create(
+                    region: r["Province/State"], 
+                    country: r["Country/Region"],
+                    date: date,
+                    metric: "recovered",
+                    lat: r["Lat"],
+                    long: r["Long"],
+                    count: val.to_i,
+                )
+            end
+            puts r["Province/State"]
         end
     end
-end
 
-deaths.each do |r|
-    r.each do |k,val|
-        if  k[0].to_i.to_s == k[0]
-            date =  Date.strptime(k, '%m/%d/%y')
-            TimeSeries.create(
-                region: r["Province/State"], 
-                country: r["Country/Region"],
-                date: date,
-                metric: "deaths",
-                lat: r["Lat"],
-                long: r["Long"],
-                count: val.to_i,
-            )
+
+
+    confirmed.each do |r|
+        r.each do |k,val|
+            if  k[0].to_i.to_s == k[0]
+                date =  Date.strptime(k, '%m/%d/%y')
+                TimeSeries.create(
+                    region: r["Province/State"], 
+                    country: r["Country/Region"] || r["Province/State"],
+                    date: date,
+                    metric: "confirmed",
+                    lat: r["Lat"],
+                    long: r["Long"],
+                    count: val.to_i,
+                )
+            end
+        end
+    end
+
+    deaths.each do |r|
+        r.each do |k,val|
+            if  k[0].to_i.to_s == k[0]
+                date =  Date.strptime(k, '%m/%d/%y')
+                TimeSeries.create(
+                    region: r["Province/State"], 
+                    country: r["Country/Region"],
+                    date: date,
+                    metric: "deaths",
+                    lat: r["Lat"],
+                    long: r["Long"],
+                    count: val.to_i,
+                )
+            end
         end
     end
 end
