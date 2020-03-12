@@ -105,6 +105,7 @@
                                 <div class="card-body">
                                     <h4 class="header-title mb-3 dyn-title">Population evolution over time (WorldWide)</h4>
                                     <%= select("stats", "country", TimeSeries.all_countries.sort, { include_blank: true, :prompt => "Select a country" }) %>
+                                    
 
                                     <div dir="ltr">
                                     <canvas id="myChart" width="1600" height="900"></canvas>
