@@ -1,0 +1,201 @@
+<body>
+
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            
+            <!-- LOGO -->
+            <div class="logo-box">
+                <a href="/" class="logo text-center logo-light">
+                    <span class="logo-lg">
+                        
+                        <span class="logo-lg-text-light">ncov2019.live</span>
+                    </span>
+                    <span class="logo-sm">
+                        <span class="logo-sm-text-light">ncov2019.live</span>
+                        
+                        
+                    </span>
+                </a>
+                <a href="/" class="logo text-center logo-dark">
+                    <span class="logo-lg">
+                        
+                        <span class="logo-lg-text-dark">ncov2019.live</span>
+                    </span>
+                    <span class="logo-sm">
+                        <span class="logo-sm-text-dark">ncov2019.live</span>
+                    </span>
+                </a>
+            </div>
+
+            
+                   
+        </div>
+        <!-- end Topbar -->
+
+        <div class="content-page">
+            <div class="content">
+                
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card widget-box-two bg-purple">
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body wigdet-two-content">
+                                            <p class="m-0 text-uppercase text-white" title="Statistics">Confirmed cases</p>
+                                            <h2 class="text-white"><span><%= number_with_delimiter(TimeSeries.current_worldwide[:confirmed]) %></span> </h2>
+
+                                        </div>
+                                        <div class="avatar-lg rounded-circle bg-soft-light ml-2 align-self-center icon">
+                                        <i class="fas tired"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+    
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card widget-box-two bg-info">
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body wigdet-two-content">
+                                            <p class="m-0 text-white text-uppercase" title="Recovered">Recovered</p>
+                                            <h2 class="text-white"><span ><%= number_with_delimiter(TimeSeries.current_worldwide[:recovered]) %></span> </h2>
+                                            
+                                        </div>
+                                        
+                                            
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+    
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card widget-box-two bg-pink">
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body wigdet-two-content">
+                                            <p class="m-0 text-uppercase text-white" title="Deaths">Deaths</p>
+                                            <h2 class="text-white"><span ><%= number_with_delimiter(TimeSeries.current_worldwide[:deaths]) %></span> </h2>
+                                        </div>
+                                        <div class="avatar-lg rounded-circle bg-soft-light ml-2 align-self-center icon">
+                                            <i class="fas skull-crossbones"></i>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+    
+    
+                    </div>
+                    <!-- end row -->
+
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-3 dyn-title">Population evolution over time (WorldWide)</h4>
+                                    <%= select("stats", "country", TimeSeries.all_countries.sort, { include_blank: true, :prompt => "Select a country" }) %>
+
+                                    <div dir="ltr">
+                                    <canvas id="myChart" width="1600" height="900"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 scroll">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-3">BreakDown by country</h4>
+                                    <div dir="ltr">
+                                            <table class="table" >
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Country</th>
+                                                <th scope="col">Confirmed</th>
+                                                <th scope="col">Recovered</th>
+                                                <th scope="col">Deaths</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% TimeSeries.current_by_country.each do |s| %>
+                                                <tr>
+                                                    <td><%= s[:country]%></td>
+                                                    <td><%= number_with_delimiter(s[:confirmed])%></td>
+                                                    <td><%= number_with_delimiter(s[:recovered])%></td>
+                                                    <td><%= number_with_delimiter(s[:deaths])%></td>
+                                                </tr>
+                                            <% end %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+
+                    
+                        <!-- end col -->
+
+                    </div>
+                    <!-- end row -->
+                    
+                </div> <!-- end container-fluid -->
+
+            </div> <!-- end content -->
+
+            
+
+            <!-- Footer Start -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            2020 &copy; Built with love by Eltoob
+                        </div>
+                        <div class="col-md-6">
+                            Source: <a href="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6">John Hopkins University</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- end Footer -->
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- END wrapper -->
+
+
+    
+
+    <!-- Bootstrap select plugin -->
+    <script src="https://coderthemes.com/codefox/layouts/vertical/assets/libs/bootstrap-select/bootstrap-select.min.js"></script>
+
+    <!-- plugins -->
+    <script src="https://coderthemes.com/codefox/layouts/vertical/assets/libs/c3/c3.min.js"></script>
+    <script src="https://coderthemes.com/codefox/layouts/vertical/assets/libs/d3/d3.min.js"></script>
+
+    <!-- dashboard init -->
+    <script src="https://coderthemes.com/codefox/layouts/vertical/assets/js/pages/dashboard.init.js"></script>
+
+    <!-- App js -->
+    <script src="https://coderthemes.com/codefox/layouts/vertical/assets/js/app.min.js"></script>
+    
+</body>
