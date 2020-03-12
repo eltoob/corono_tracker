@@ -17,7 +17,7 @@
 
 .content-page {
         margin-left: 0px !important;
-        margin-top: 80px !important;
+        margin-top: 0px !important;
 }
 
 .footer {
@@ -32,4 +32,15 @@
 .ko-fi-button {
     margin-top: 20px;
 
+}
+.tag {
+    height: 50px;
+    margin-top: 10px;
+}
+.source {
+    text-align: right;
+}
+
+.main-alert {
+    display: none;
 }

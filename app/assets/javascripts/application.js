@@ -19,6 +19,7 @@ $( document ).ready(function() {
 
     $("#stats_country").on("change", function() {
         country = $(this).val();
+        $(".dyn-title").text("POPULATION EVOLUTION OVER TIME (" + country + ")")
         fetchGraph(country);
 
     })
@@ -84,3 +85,19 @@ $( document ).ready(function() {
         chart.update();
     });
   }
+
+
+  $( document ).ready(function() {
+    fetch('https://www.reddit.com/r/China_Flu/top/.json?count=1')
+    .then((response) => {
+        return response.json();
+    })
+    .then((data) => {
+         
+        var title = data.data.children[0].data.title;
+        var url = data.data.children[0].data.url;
+        $(".main-news").text(title)
+        $(".read-link").attr("href", url);
+        $(".main-alert").show();
+    }); 
+  });

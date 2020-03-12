@@ -5,42 +5,20 @@
 
         
         <!-- Topbar Start -->
-        <div class="navbar-custom">
-            
-            <!-- LOGO -->
-            <div class="logo-box">
-                <a href="/" class="logo text-center logo-light">
-                    <span class="logo-lg">
-                        
-                        <span class="logo-lg-text-light">ncov2019.live</span>
-                    </span>
-                    <span class="logo-sm">
-                        <span class="logo-sm-text-light">ncov2019.live</span>
-                        
-                        
-                    </span>
-                </a>
-                <a href="/" class="logo text-center logo-dark">
-                    <span class="logo-lg">
-                        
-                        <span class="logo-lg-text-dark">ncov2019.live</span>
-                    </span>
-                    <span class="logo-sm">
-                        <span class="logo-sm-text-dark">ncov2019.live</span>
-                    </span>
-                </a>
-            </div>
-
-            
-                   
-        </div>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-bold">NCOVID2019.LIVE</h5>
+        <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffeee', '#29abe0', 'Z8Z31HOWU');kofiwidget2.draw();</script> 
+      </div>
         <!-- end Topbar -->
 
         <div class="content-page">
             <div class="content">
-                
+            
                 <!-- Start Content-->
                 <div class="container-fluid">
+                    # <div class="alert alert-primary main-alert" role="alert">
+                    #     <strong> Top News: </strong><span class="main-news"></span> <a class="read-link" href=""> Read more </a>
+                    # </div>
                     <div class="row">
 
                         <div class="col-xl-4 col-md-6">
@@ -53,7 +31,7 @@
 
                                         </div>
                                         <div class="avatar-lg rounded-circle bg-soft-light ml-2 align-self-center icon">
-                                        <i class="fas tired"></i>
+                                        <%= image_tag("cough", class: "tag") %>
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +47,9 @@
                                             <h2 class="text-white"><span ><%= number_with_delimiter(TimeSeries.current_worldwide[:recovered]) %></span> </h2>
                                             
                                         </div>
-                                        
+                                        <div class="avatar-lg rounded-circle bg-soft-light ml-2 align-self-center icon">
+                                            <%= image_tag("emoji", class: "tag") %>
+                                        </div>
                                             
                                         
                                     </div>
@@ -86,7 +66,7 @@
                                             <h2 class="text-white"><span ><%= number_with_delimiter(TimeSeries.current_worldwide[:deaths]) %></span> </h2>
                                         </div>
                                         <div class="avatar-lg rounded-circle bg-soft-light ml-2 align-self-center icon">
-                                            <i class="fas skull-crossbones"></i>
+                                            <%= image_tag("death", class: "tag") %>
                                         </div>
                                         
                                         
@@ -166,7 +146,7 @@
                         <div class="col-md-6">
                             2020 &copy; Built with love by Eltoob
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 source">
                             Source: <a href="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6">John Hopkins University</a>
                         </div>
                     </div>
