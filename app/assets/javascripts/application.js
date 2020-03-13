@@ -60,25 +60,34 @@ $( document ).ready(function() {
         return response.json();
     })
     .then((data) => {
-        chart.data.labels = Object.keys(data["recovered"])
+        var labels = Object.keys(data["recovered"]).sort()
+        chart.data.labels = labels;
+        let recovered = [];
+        let confirmed = [];
+        let deaths = [];
+        for (i in labels) {
+            recovered.push(data['recovered'][labels[i]]);
+            confirmed.push(data['confirmed'][labels[i]]);
+            deaths.push(data['deaths'][labels[i]]);
+        }
         chart.data.datasets = [
             {
                 label: 'Recovered',
                 backgroundColor: 'transparent',
                 borderColor: 'green',
-                data: Object.values(data['recovered'])
+                data: recovered
             },
             {
                 label: 'Confirmed',
                 backgroundColor: 'transparent',
                 borderColor: 'orange',
-                data: Object.values(data['confirmed'])
+                data: confirmed
             },
             {
                 label: 'Deaths',
                 backgroundColor: 'transparent',
                 borderColor: 'red',
-                data: Object.values(data['deaths'])
+                data: deaths
             }
         ]
 

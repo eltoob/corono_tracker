@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2020_03_12_030603) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "time_series", force: :cascade do |t|
     t.string "region"
     t.string "country"
