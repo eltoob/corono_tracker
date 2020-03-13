@@ -12,15 +12,23 @@
 //
 //= require rails-ujs
 //= require activestorage
+//= require waves
 //= require turbolinks
 //= require_tree .
 var chart;
 $( document ).ready(function() {
 
-    $("#stats_country").on("change", function() {
+    $("#stats_country").on("select2:select", function() {
         country = $(this).val();
         $(".dyn-title").text("POPULATION EVOLUTION OVER TIME (" + country + ")")
-        fetchGraph(country);
+        $('#stats_region').val(null).trigger('change')
+        fetchGraph(country, "");
+
+    })
+    $("#stats_region").on("select2:select", function() {
+        region = $(this).val();
+        $(".dyn-title").text("POPULATION EVOLUTION OVER TIME (" + region + ")")
+        fetchGraph("", region);
 
     })
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -50,12 +58,12 @@ $( document ).ready(function() {
             }
         }
     });
-    fetchGraph("");
+    fetchGraph("", "");
   });
 
 
-  function fetchGraph(country) {
-    fetch('/api/stats?country='+country)
+  function fetchGraph(country, region) {
+    fetch('/api/stats?country='+country+"&region="+region)
     .then((response) => {
         return response.json();
     })
@@ -108,5 +116,15 @@ $( document ).ready(function() {
         $(".main-news").text(title)
         $(".read-link").attr("href", url);
         $(".main-alert").show();
-    }); 
+    });
+
   });
+
+
+  $(document).ready(function() {
+    $('#stats_country').select2();
+    $('#stats_region').select2();
+    
+});
+
+

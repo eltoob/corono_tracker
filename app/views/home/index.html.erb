@@ -7,7 +7,7 @@
         <!-- Topbar Start -->
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-bold">NCOVID2019.LIVE</h5>
-        <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffeee', '#29abe0', 'Z8Z31HOWU');kofiwidget2.draw();</script> 
+        <script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffee', '#e02828', 'Z8Z31HOWU');kofiwidget2.draw();</script> 
       </div>
         <!-- end Topbar -->
 
@@ -82,7 +82,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="header-title mb-3 dyn-title">Population evolution over time (WorldWide)</h4>
-                                    <%= select("stats", "country", TimeSeries.all_countries.sort, { include_blank: true, :prompt => "Select a country" }) %>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <%= select("stats", "country", TimeSeries.all_countries.sort, { include_blank: true, :prompt => "Select a country" }) %>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <%= select("stats", "region", TimeSeries.all_regions.compact.sort, { include_blank: true, prompt: "Select a region" }) %>
+                                        </div>
+                                    </div>
                                     
 
                                     <div dir="ltr">
