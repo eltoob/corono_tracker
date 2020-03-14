@@ -49,13 +49,7 @@ $( document ).ready(function() {
     
         // Configuration options go here
         options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+            
         }
     });
     fetchGraph("", "");
@@ -73,30 +67,34 @@ $( document ).ready(function() {
         let recovered = [];
         let confirmed = [];
         let deaths = [];
+        let infected = [];
+        let susceptibles = [];
         for (i in labels) {
             recovered.push(data['recovered'][labels[i]]);
             confirmed.push(data['confirmed'][labels[i]]);
             deaths.push(data['deaths'][labels[i]]);
+            infected.push(data['confirmed'][labels[i]] - data['recovered'][labels[i]] - data['deaths'][labels[i]]);
         }
         chart.data.datasets = [
             {
                 label: 'Recovered',
                 backgroundColor: 'transparent',
                 borderColor: 'green',
-                data: recovered
+                data: recovered,
+                
             },
             {
-                label: 'Confirmed',
+                label: 'Infected',
                 backgroundColor: 'transparent',
-                borderColor: 'orange',
-                data: confirmed
+                borderColor: 'red',
+                data: infected
             },
             {
                 label: 'Deaths',
                 backgroundColor: 'transparent',
-                borderColor: 'red',
-                data: deaths
-            }
+                borderColor: 'black',
+                data: deaths,
+            },
         ]
 
         chart.update();
