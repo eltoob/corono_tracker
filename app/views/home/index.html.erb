@@ -78,7 +78,7 @@
                     <!-- end row -->
 
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-7">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="header-title mb-3 dyn-title">Population evolution over time (WorldWide)</h4>
@@ -96,7 +96,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 scroll">
+                        <div class="col-xl-5 scroll">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="header-title mb-3">BreakDown by country</h4>
@@ -108,6 +108,7 @@
                                                 <th scope="col">Confirmed</th>
                                                 <th scope="col">Recovered</th>
                                                 <th scope="col">Deaths</th>
+                                                <th scope="col">Death %</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -117,6 +118,7 @@
                                                     <td><%= number_with_delimiter(s[:confirmed])%></td>
                                                     <td><%= number_with_delimiter(s[:recovered])%></td>
                                                     <td><%= number_with_delimiter(s[:deaths])%></td>
+                                                    <td><%= (( s[:deaths] && s[:deaths] > 0) ?  (100.0 * s[:deaths])/s[:confirmed] : 0).round(2)%>%</td>
                                                 </tr>
                                             <% end %>
                                             </tbody>

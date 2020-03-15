@@ -3,6 +3,7 @@ class TimeSeries < ApplicationRecord
     scope :confirmed, -> { where(metric: 'confirmed') }
     scope :deaths, -> { where(metric: 'deaths') }
     scope :current, -> {where(date: last_date_available)}
+    scope :past, ->  {where("date <= ?", last_date_available)}
 
     def self.last_date_available
         return self.where("count > 0").order(:date).last.date
@@ -82,12 +83,12 @@ class TimeSeries < ApplicationRecord
 
     def self.time_series_per_region(region)
         if region == 'world'
-            return self.time_series_worldwide
+            return self.time_series_worldwide.past
         end
         return {
-            recovered: self.where(region: region).group(:date).recovered.sum(:count),
-            confirmed: self.where(region: region).group(:date).confirmed.sum(:count),
-            deaths: self.where(region: region).group(:date).deaths.sum(:count)
+            recovered: self.past.where(region: region).group(:date).recovered.sum(:count),
+            confirmed: self.past.where(region: region).group(:date).confirmed.sum(:count),
+            deaths: self.past.where(region: region).group(:date).deaths.sum(:count)
         }
     end
 
@@ -96,17 +97,17 @@ class TimeSeries < ApplicationRecord
             return self.time_series_worldwide
         end
         return {
-            recovered: self.where(country: country).group(:date).recovered.sum(:count),
-            confirmed: self.where(country: country).group(:date).confirmed.sum(:count),
-            deaths: self.where(country: country).group(:date).deaths.sum(:count)
+            recovered: self.past.where(country: country).group(:date).recovered.sum(:count),
+            confirmed: self.past.where(country: country).group(:date).confirmed.sum(:count),
+            deaths: self.past.where(country: country).group(:date).deaths.sum(:count)
         }
     end
 
     def self.time_series_worldwide
         return {
-            recovered: self.group(:date).recovered.sum(:count),
-            confirmed: self.group(:date).confirmed.sum(:count),
-            deaths: self.group(:date).deaths.sum(:count)
+            recovered: self.past.group(:date).recovered.sum(:count),
+            confirmed: self.past.group(:date).confirmed.sum(:count),
+            deaths: self.past.group(:date).deaths.sum(:count)
         }
     end
 
