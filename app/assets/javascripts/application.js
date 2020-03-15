@@ -22,15 +22,10 @@ $( document ).ready(function() {
         country = $(this).val();
         $(".dyn-title").text("POPULATION EVOLUTION OVER TIME (" + country + ")")
         $('#stats_region').val(null).trigger('change')
-        fetchGraph(country, "");
+        fetchGraph(country);
 
     })
-    $("#stats_region").on("select2:select", function() {
-        region = $(this).val();
-        $(".dyn-title").text("POPULATION EVOLUTION OVER TIME (" + region + ")")
-        fetchGraph("", region);
-
-    })
+    
     var ctx = document.getElementById('myChart').getContext('2d');
     chart = new Chart(ctx, {
         // The type of chart we want to create
@@ -52,51 +47,66 @@ $( document ).ready(function() {
             
         }
     });
-    fetchGraph("", "");
+    fetchGraph("");
   });
 
 
-  function fetchGraph(country, region) {
-    fetch('/api/stats?country='+country+"&region="+region)
+  function fetchGraph(countries) {
+    
+    fetch('/api/stats?countries='+ encodeURI(countries))
     .then((response) => {
         return response.json();
     })
-    .then((data) => {
-        var labels = Object.keys(data["recovered"]).sort()
+    .then((dataArray) => {
+        var labels = Object.keys(dataArray[0]["recovered"]).sort()
         chart.data.labels = labels;
-        let recovered = [];
-        let confirmed = [];
-        let deaths = [];
-        let infected = [];
-        let susceptibles = [];
-        for (i in labels) {
-            recovered.push(data['recovered'][labels[i]]);
-            confirmed.push(data['confirmed'][labels[i]]);
-            deaths.push(data['deaths'][labels[i]]);
-            infected.push(data['confirmed'][labels[i]] - data['recovered'][labels[i]] - data['deaths'][labels[i]]);
-        }
-        chart.data.datasets = [
-            {
-                label: 'Recovered',
-                backgroundColor: 'transparent',
-                borderColor: 'green',
-                data: recovered,
-                
-            },
-            {
-                label: 'Infected',
-                backgroundColor: 'transparent',
-                borderColor: 'red',
-                data: infected
-            },
-            {
-                label: 'Deaths',
-                backgroundColor: 'transparent',
-                borderColor: 'black',
-                data: deaths,
-            },
-        ]
+        let datasets = []
+        for(dataIndex in dataArray) {
+            let country;
+            if (countries == "") {
+                country = "World"
+            } else {
+                country = countries[dataIndex]
+            }
+            let data = dataArray[dataIndex];
+            let recovered = [];
+            let confirmed = [];
+            let deaths = [];
+            let infected = [];
+            let susceptibles = [];
+            for (i in labels) {
+                recovered.push(data['recovered'][labels[i]]);
+                confirmed.push(data['confirmed'][labels[i]]);
+                deaths.push(data['deaths'][labels[i]]);
+                infected.push(data['confirmed'][labels[i]] - data['recovered'][labels[i]] - data['deaths'][labels[i]]);
+            }
+            
+            datasets.push(
+                {
+                    label: 'Recovered (' + country + ')',
+                    backgroundColor: 'transparent',
+                    borderColor: 'green',
+                    data: recovered,
+                    hidden: countries.length > 1
+                    
+                },
+                {
+                    label: 'Infected (' + country + ')',
+                    backgroundColor: 'transparent',
+                    borderColor: 'red',
+                    data: infected
+                },
+                {
+                    label: 'Deaths (' + country + ')',
+                    backgroundColor: 'transparent',
+                    borderColor: 'black',
+                    data: deaths,
+                    hidden: countries.length > 1
+                }
+            )
 
+        }
+        chart.data.datasets = datasets;
         chart.update();
     });
   }

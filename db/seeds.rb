@@ -25,9 +25,10 @@ recovered = read(recovered_file)
 confirmed = read(confirmed_file)
 deaths = read(deaths_file)
 
-TimeSeries.delete_all
+
 
 ActiveRecord::Base.transaction do
+    TimeSeries.delete_all
     recovered.each do |r|
         r.each do |k,val|
             if  k[0].to_i.to_s == k[0]

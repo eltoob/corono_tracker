@@ -3,15 +3,15 @@ class HomeController < ApplicationController
   end
 
   def stats
-    country = params[:country]
-    region = params[:region]
-    if country.present?
-      @ts = TimeSeries.time_series_per_country(country)
-    elsif region.present?
-      @ts = TimeSeries.time_series_per_region(region)
-    else
-      @ts = TimeSeries.time_series_worldwide
+
+    countries = params[:countries].split(",")
+    @tss = []
+    countries.each do |country|
+      @tss.push(TimeSeries.time_series_per_location(country))
     end
-    render json: @ts
+    if countries.empty?
+      @tss.push(TimeSeries.time_series_worldwide)
+    end
+    render json: @tss
   end
 end

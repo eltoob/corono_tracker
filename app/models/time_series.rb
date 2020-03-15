@@ -110,4 +110,16 @@ class TimeSeries < ApplicationRecord
         }
     end
 
+    def self.time_series_per_location(location)
+        if location.empty?
+            return self.time_series_worldwide
+        elsif self.all_countries.include?(location)
+            return self.time_series_per_country(location)
+        elsif self.all_regions.include?(location)
+            return self.time_series_per_region(location)
+        else
+            return []
+        end
+    end
+
 end
