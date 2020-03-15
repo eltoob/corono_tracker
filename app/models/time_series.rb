@@ -5,7 +5,7 @@ class TimeSeries < ApplicationRecord
     scope :current, -> {where(date: last_date_available)}
 
     def self.last_date_available
-        return self.order(:date).last.date
+        return self.where("count > 0").order(:date).last.date
     end
 
     def self.current_ts
