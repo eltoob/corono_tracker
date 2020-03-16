@@ -48,3 +48,8 @@
 h5 {
     font-size: 25px;
 }
+.last_update {
+    text-align: right;
+    font-style: italic;
+    color: gray;
+}

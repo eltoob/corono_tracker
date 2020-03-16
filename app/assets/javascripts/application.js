@@ -13,6 +13,7 @@
 //= require rails-ujs
 //= require activestorage
 //= require waves
+//= require local-time
 //= require turbolinks
 //= require_tree .
 var chart;
@@ -58,6 +59,10 @@ $( document ).ready(function() {
         return response.json();
     })
     .then((dataArray) => {
+        if (!dataArray[0]["recovered"]) {
+            alert("No data available")
+            return; 
+        }
         var labels = Object.keys(dataArray[0]["recovered"]).sort()
         chart.data.labels = labels;
         let datasets = []
