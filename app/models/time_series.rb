@@ -53,12 +53,11 @@ class TimeSeries < ApplicationRecord
                 res.push({
                     country: c,
                     confirmed: confirmed_by_country[c],
-                    recovered: recovered_by_country[c],
                     deaths: deaths_by_country[c]
                 })
             end
         end
-        return res.sort_by{ |p| p[:confirmed] }.reverse()
+        return res.sort_by{ |p| (p[:confirmed] || 0) }.reverse()
     end
     
 
