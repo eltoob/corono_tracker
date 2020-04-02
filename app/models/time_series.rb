@@ -6,7 +6,7 @@ class TimeSeries < ApplicationRecord
     scope :past, ->  {where("date <= ?", last_date_available)}
 
     def self.last_date_available
-        return self.where("count > 0").order(:date).last.date
+        return self.recovered.where(country: "France").where("count > 0").order(:date).last.date
     end
 
     def self.current_ts

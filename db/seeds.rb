@@ -10,6 +10,9 @@ recovered_file = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/mast
 confirmed_file = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
 deaths_file = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
 
+confirmed_us_file = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"
+death_us_file = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"
+
 
 require 'rubygems'
 require 'open-uri'
@@ -25,10 +28,13 @@ recovered = read(recovered_file)
 confirmed = read(confirmed_file)
 deaths = read(deaths_file)
 
+deaths_us = read(death_us_file)
+confirmed_us = read(confirmed_us_file)
 
 
 ActiveRecord::Base.transaction do
     TimeSeries.delete_all
+    puts "Loading recovered"
     recovered.each do |r|
         r.each do |k,val|
             if  k[0].to_i.to_s == k[0]
@@ -48,7 +54,7 @@ ActiveRecord::Base.transaction do
     end
 
 
-
+    puts "Loading Confirmed"
     confirmed.each do |r|
         r.each do |k,val|
             if  k[0].to_i.to_s == k[0]
@@ -66,6 +72,7 @@ ActiveRecord::Base.transaction do
         end
     end
 
+    puts "Loading Deaths"
     deaths.each do |r|
         r.each do |k,val|
             if  k[0].to_i.to_s == k[0]
@@ -82,4 +89,42 @@ ActiveRecord::Base.transaction do
             end
         end
     end
+
+    puts "Loading Deaths in the US"
+    deaths_us.each do |r| 
+        r.each do |k,val|
+            if  k[0].to_i.to_s == k[0]
+                date =  Date.strptime(k, '%m/%d/%y')
+                TimeSeries.create(
+                    region: r["Combined_Key"], 
+                    country: r["Country_Region"],
+                    date: date,
+                    metric: "deaths",
+                    lat: r["Lat"],
+                    long: r["Long"],
+                    count: val.to_i,
+                )
+            end
+        end
+    end
+
+    puts "Loading Confirmed in the US"
+    confirmed_us.each do |r| 
+        r.each do |k,val|
+            if  k[0].to_i.to_s == k[0]
+                date =  Date.strptime(k, '%m/%d/%y')
+                TimeSeries.create(
+                    region: r["Combined_Key"], 
+                    country: r["Country_Region"],
+                    date: date,
+                    metric: "confirmed",
+                    lat: r["Lat"],
+                    long: r["Long"],
+                    count: val.to_i,
+                )
+            end
+        end
+    end
+
+    
 end

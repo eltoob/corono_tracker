@@ -59,6 +59,7 @@ $( document ).ready(function() {
         return response.json();
     })
     .then((dataArray) => {
+        debugger;
         if (!dataArray[0]["recovered"]) {
             alert("No data available")
             return; 
