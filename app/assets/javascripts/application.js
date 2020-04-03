@@ -83,9 +83,8 @@ $( document ).ready(function() {
                 recovered.push(data['recovered'][labels[i]] || 0);
                 confirmed.push(data['confirmed'][labels[i]]);
                 deaths.push(data['deaths'][labels[i]]);
-                infected.push(data['confirmed'][labels[i]] - data['recovered'][labels[i]] || 0 - data['deaths'][labels[i]]);
+                infected.push(data['confirmed'][labels[i]] - (data['recovered'][labels[i]] || 0) - data['deaths'][labels[i]]);
             }
-            debugger;
             
             datasets.push(
                 {
