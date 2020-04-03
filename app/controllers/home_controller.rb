@@ -7,7 +7,6 @@ class HomeController < ApplicationController
     if country.empty?
       @tss = [TimeSeries.time_series_worldwide]
     else
-      byebug
       @tss = [TimeSeries.time_series_per_location(country)]
     end
     render json: @tss

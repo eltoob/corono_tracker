@@ -59,12 +59,11 @@ $( document ).ready(function() {
         return response.json();
     })
     .then((dataArray) => {
-        debugger;
         if (!dataArray[0]["recovered"]) {
             alert("No data available")
             return; 
         }
-        var labels = Object.keys(dataArray[0]["recovered"]).sort()
+        var labels = Object.keys(dataArray[0]["confirmed"]).sort()
         chart.data.labels = labels;
         let datasets = []
         for(dataIndex in dataArray) {
@@ -81,11 +80,12 @@ $( document ).ready(function() {
             let infected = [];
             let susceptibles = [];
             for (i in labels) {
-                recovered.push(data['recovered'][labels[i]]);
+                recovered.push(data['recovered'][labels[i]] || 0);
                 confirmed.push(data['confirmed'][labels[i]]);
                 deaths.push(data['deaths'][labels[i]]);
-                infected.push(data['confirmed'][labels[i]] - data['recovered'][labels[i]] - data['deaths'][labels[i]]);
+                infected.push(data['confirmed'][labels[i]] - data['recovered'][labels[i]] || 0 - data['deaths'][labels[i]]);
             }
+            debugger;
             
             datasets.push(
                 {

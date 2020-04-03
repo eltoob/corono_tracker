@@ -4,6 +4,7 @@ class TimeSeries < ApplicationRecord
     scope :deaths, -> { where(metric: 'deaths') }
     scope :current, -> {where(date: last_date_available)}
     scope :past, ->  {where("date <= ?", last_date_available)}
+    scope :not_us_county, -> { where.not(country: '') }
 
     def self.last_date_available
         return self.recovered.where(country: "France").where("count > 0").order(:date).last.date
@@ -11,9 +12,9 @@ class TimeSeries < ApplicationRecord
 
     def self.current_ts
         last_date_available = self.last_date_available
-        ts_recovered = where(date: last_date_available).recovered
-        ts_confirmed = where(date: last_date_available).confirmed
-        ts_deaths = where(date: last_date_available).deaths
+        ts_recovered = where(date: last_date_available).recovered.not_us_county
+        ts_confirmed = where(date: last_date_available).confirmed.not_us_county
+        ts_deaths = where(date: last_date_available).deaths.not_us_county
 
         return {
             ts_recovered: ts_recovered,

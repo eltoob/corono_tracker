@@ -114,6 +114,7 @@
                                             </thead>
                                             <tbody>
                                             <% TimeSeries.current_by_country.each do |s| %>
+                                                <% if s[:country].present? %>
                                                 <tr>
                                                     <td><%= s[:country]%></td>
                                                     <td><%= number_with_delimiter(s[:confirmed])%></td>
@@ -121,6 +122,7 @@
                                                     <td><%= number_with_delimiter(s[:deaths])%></td>
                                                     <td><%= (( s[:deaths] && s[:deaths] > 0) ?  (100.0 * s[:deaths])/s[:confirmed] : 0).round(2)%>%</td>
                                                 </tr>
+                                                <% end %>
                                             <% end %>
                                             </tbody>
                                         </table>

@@ -97,7 +97,7 @@ ActiveRecord::Base.transaction do
                 date =  Date.strptime(k, '%m/%d/%y')
                 TimeSeries.create(
                     region: r["Combined_Key"], 
-                    country: r["Country_Region"],
+                    country: '',
                     date: date,
                     metric: "deaths",
                     lat: r["Lat"],
@@ -115,7 +115,7 @@ ActiveRecord::Base.transaction do
                 date =  Date.strptime(k, '%m/%d/%y')
                 TimeSeries.create(
                     region: r["Combined_Key"], 
-                    country: r["Country_Region"],
+                    country: '',
                     date: date,
                     metric: "confirmed",
                     lat: r["Lat"],
