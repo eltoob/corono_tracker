@@ -17,10 +17,13 @@
 //= require turbolinks
 //= require_tree .
 var chart;
+let SHOW_DAILY_CASES = false;
+let CURRENT_COUNTRY = ""
 $( document ).ready(function() {
 
     $("#stats_country").on("select2:select", function() {
         country = $(this).val();
+        CURRENT_COUNTRY = country;
         $(".dyn-title").text("POPULATION EVOLUTION OVER TIME (" + country + ")")
         $('#stats_region').val(null).trigger('change')
         fetchGraph(country);
@@ -79,12 +82,31 @@ $( document ).ready(function() {
             let deaths = [];
             let infected = [];
             let susceptibles = [];
-            for (i in labels) {
-                recovered.push(data['recovered'][labels[i]] || 0);
-                confirmed.push(data['confirmed'][labels[i]]);
-                deaths.push(data['deaths'][labels[i]]);
-                infected.push(data['confirmed'][labels[i]] - (data['recovered'][labels[i]] || 0) - data['deaths'][labels[i]]);
-            }
+            if (SHOW_DAILY_CASES) {
+                for (i in labels) {
+                    if( i > 0 ) {
+                        recovered.push((data['recovered'][labels[i]] || 0) -( data['recovered'][labels[i-1]] || 0));
+                        confirmed.push(data['confirmed'][labels[i]] - data['confirmed'][labels[i-1]]);
+                        deaths.push(data['deaths'][labels[i]] - data['deaths'][labels[i-1]]);
+                        let infected_today = data['confirmed'][labels[i]] - (data['recovered'][labels[i]] || 0) - data['deaths'][labels[i]];
+                        let infected_yesterday = data['confirmed'][labels[i-1]] - (data['recovered'][labels[i-1]] || 0) - data['deaths'][labels[i-1]];
+                        infected.push(infected_today - infected_yesterday);
+                    } else {
+                        recovered.push(data['recovered'][labels[i]] || 0);
+                        confirmed.push(data['confirmed'][labels[i]]);
+                        deaths.push(data['deaths'][labels[i]]);
+                        infected.push(data['confirmed'][labels[i]] - (data['recovered'][labels[i]] || 0) - data['deaths'][labels[i]]);
+                    }
+                }
+            } else {
+                for (i in labels) {
+                    recovered.push(data['recovered'][labels[i]] || 0);
+                    confirmed.push(data['confirmed'][labels[i]]);
+                    deaths.push(data['deaths'][labels[i]]);
+                    infected.push(data['confirmed'][labels[i]] - (data['recovered'][labels[i]] || 0) - data['deaths'][labels[i]]);
+                }
+            }   
+            
             
             datasets.push(
                 {
@@ -137,7 +159,12 @@ $( document ).ready(function() {
   $(document).ready(function() {
     $('#stats_country').select2();
     $('#stats_region').select2();
-    
+    $("#daily_case_switcher").on("change", (val)=> {
+        SHOW_DAILY_CASES = !SHOW_DAILY_CASES;
+        fetchGraph(CURRENT_COUNTRY);
+    })    
 });
+
+
 
 
