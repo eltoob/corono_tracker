@@ -109,32 +109,40 @@ $( document ).ready(function() {
             
             
             datasets.push(
+                
                 {
-                    label: 'Recovered (' + country + ')',
-                    backgroundColor: 'transparent',
-                    borderColor: 'green',
-                    data: recovered,
-                    hidden: countries.length > 1
-                    
-                },
-                {
-                    label: 'Infected (' + country + ')',
-                    backgroundColor: 'transparent',
+                    label: 'Confirmed (' + country + ')',
+                    backgroundColor: SHOW_DAILY_CASES ? 'red' : 'transparent',
                     borderColor: 'red',
-                    data: infected
+                    data: confirmed
                 },
                 {
                     label: 'Deaths (' + country + ')',
-                    backgroundColor: 'transparent',
+                    backgroundColor: SHOW_DAILY_CASES ? 'black' : 'transparent',
                     borderColor: 'black',
                     data: deaths,
-                    hidden: countries.length > 1
                 }
             )
 
         }
-        chart.data.datasets = datasets;
-        chart.update();
+    
+        let chartType = SHOW_DAILY_CASES ? 'bar' : 'line';
+        var ctx = document.getElementById('myChart').getContext('2d');
+        chart = new Chart(ctx, {
+        
+        type: chartType,
+    
+        data: {
+            labels: labels,
+            datasets: datasets,
+        },
+    
+        // Configuration options go here
+        options: {
+            
+        }
+    });
+        // chart.update();
     });
   }
 
