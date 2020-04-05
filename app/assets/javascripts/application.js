@@ -125,6 +125,7 @@ $( document ).ready(function() {
             )
 
         }
+        chart.destroy();
     
         let chartType = SHOW_DAILY_CASES ? 'bar' : 'line';
         var ctx = document.getElementById('myChart').getContext('2d');
